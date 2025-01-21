@@ -10,10 +10,13 @@
 
       <button type="submit">Login</button>
     </form>
+    <p>Don't have an account? <router-link to="/register">Register</router-link></p>
   </div>
 </template>
 
 <script>
+import { loginUser } from '@/api'
+
 export default {
   data() {
     return {
@@ -22,13 +25,24 @@ export default {
     }
   },
   methods: {
-    handleLogin() {
-      console.log('Login Info:')
-      console.log('Email:', this.loginEmail)
-      console.log('Password:', this.loginPassword)
-      // Clear the form
-      this.loginEmail = ''
-      this.loginPassword = ''
+    async handleLogin() {
+      try {
+        const res = await loginUser(this.loginEmail, this.loginPassword)
+        const token = res.data.token
+
+        // Store token in localStorage so that u don't have to login again and again
+        localStorage.setItem('user_email', this.loginEmail)
+        localStorage.setItem('auth_token', token)
+
+        // Clear the form
+        this.loginEmail = ''
+        this.loginPassword = ''
+
+        // Redirect to the welcome page
+        this.$router.push('/')
+      } catch (error) {
+        console.log('Failed to log in user.', error.response.data)
+      }
     },
   },
 }

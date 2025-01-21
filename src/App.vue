@@ -1,38 +1,8 @@
 <template>
   <div id="app">
-    <div class="container" v-if="isLoginForm">
-      <LoginForm />
-      <p>Don't have an account? <a href="#" @click="toggleForm">Register</a></p>
-    </div>
-
-    <div class="container" v-else>
-      <RegistrationForm />
-      <p>Already have an account? <a href="#" @click="toggleForm">Login</a></p>
-    </div>
+    <RouterView />
   </div>
 </template>
-
-<script>
-import LoginForm from './components/LoginForm.vue'
-import RegistrationForm from './components/RegistrationForm.vue'
-
-export default {
-  components: {
-    LoginForm,
-    RegistrationForm,
-  },
-  data() {
-    return {
-      isLoginForm: true,
-    }
-  },
-  methods: {
-    toggleForm() {
-      this.isLoginForm = !this.isLoginForm
-    },
-  },
-}
-</script>
 
 <style>
 html,

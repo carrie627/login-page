@@ -2,9 +2,6 @@
   <div class="form-container">
     <h2>Register</h2>
     <form @submit.prevent="handleRegister">
-      <label for="registerName">Name:</label>
-      <input type="text" v-model="registerName" id="registerName" required />
-
       <label for="registerEmail">Email:</label>
       <input type="email" v-model="registerEmail" id="registerEmail" required />
 
@@ -13,28 +10,39 @@
 
       <button type="submit">Register</button>
     </form>
+    <p>Already have an account? <router-link to="/login">Login</router-link></p>
   </div>
 </template>
 
 <script>
+import { registerUser } from '@/api'
+
 export default {
   data() {
     return {
-      registerName: '',
       registerEmail: '',
       registerPassword: '',
     }
   },
   methods: {
-    handleRegister() {
-      console.log('Register Info:')
-      console.log('Name:', this.registerName)
-      console.log('Email:', this.registerEmail)
-      console.log('Password:', this.registerPassword)
-      // Clear the form
-      this.registerName = ''
-      this.registerEmail = ''
-      this.registerPassword = ''
+    async handleRegister() {
+      try {
+        const res = await registerUser(this.registerEmail, this.registerPassword)
+        const token = res.data.token
+
+        // Store token in localStorage so that u don't have to login again and again
+        localStorage.setItem('user_email', this.registerEmail)
+        localStorage.setItem('auth_token', token)
+
+        // Clear the form
+        this.registerEmail = ''
+        this.registerPassword = ''
+
+        // Redirect to the welcome page
+        this.$router.push('/')
+      } catch (error) {
+        console.log('Failed to register user.', error.response.data)
+      }
     },
   },
 }
