@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginForm from './components/LoginForm.vue'
 import RegistrationForm from './components/RegistrationForm.vue'
 import WelcomeScreen from './components/WelcomeScreen.vue'
+import VideoRecorder from './components/VideoRecorder.vue'
+import ShowVideo from './components/ShowVideo.vue'
 
 const routes = [
   {
@@ -19,6 +21,16 @@ const routes = [
     name: 'RegistrationForm',
     component: RegistrationForm,
   },
+  {
+    path: '/videorecorder',
+    name: 'VideoRecorder',
+    component: VideoRecorder,
+  },
+  {
+    path: '/showvideo',
+    name: 'ShowVideo',
+    component: ShowVideo,
+  },
 ]
 
 const router = createRouter({
@@ -31,7 +43,11 @@ router.beforeEach((to, from, next) => {
   const ifTokenExists = localStorage.getItem('auth_token')
 
   // Redirect to Login page if user is not logged in
-  if (!ifUserExists && !ifTokenExists && to.name === 'WelcomeScreen') {
+  if (
+    !ifUserExists &&
+    !ifTokenExists &&
+    (to.name === 'WelcomeScreen' || to.name === 'VideoRecorder' || to.name === 'ShowVideo')
+  ) {
     next({ name: 'LoginForm' })
   } else if (ifUserExists && ifTokenExists && to.name === 'LoginForm') {
     next({ name: 'WelcomeScreen' })
