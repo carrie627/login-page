@@ -1,41 +1,29 @@
 <template>
   <div>
-    <div v-if="videoStore.isRecorder">
-      <h1>Video Recorder</h1>
-      <div>
-        <video ref="video" autoplay muted></video>
-      </div>
-
-      <div>
-        <button @click="startRecording($refs.video)" :disabled="videoStore.isRecording">
-          Start Recording
-        </button>
-        <button
-          @click="stopRecording(videoStore.mediaRecorder)"
-          :disabled="!videoStore.isRecording"
-        >
-          Stop Recording
-        </button>
-      </div>
+    <h1>Video Recorder</h1>
+    <div>
+      <video ref="video" autoplay muted></video>
     </div>
 
-    <div v-else>
-      <ShowVideo />
+    <div>
+      <button @click="startRecording($refs.video)" :disabled="videoStore.isRecording">
+        Start Recording
+      </button>
+      <button @click="stopRecording(videoStore.mediaRecorder)" :disabled="!videoStore.isRecording">
+        Stop Recording
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import { useVideoStore } from '@/stores/videoStore'
-import ShowVideo from './ShowVideo.vue'
+import { useRouter } from 'vue-router'
 
 export default {
-  components: {
-    ShowVideo,
-  },
-
   setup() {
     const videoStore = useVideoStore()
+    const router = useRouter()
 
     const startRecording = async (videoRef) => {
       try {
@@ -65,6 +53,9 @@ export default {
           // Stop the video stream
           stream.getTracks().forEach((track) => track.stop())
           videoRef.srcObject = null
+
+          // navigate to showvideo route
+          router.push({ path: 'showvideo' })
         }
       } catch (error) {
         console.error('Error accessing media devices:', error)
@@ -76,7 +67,6 @@ export default {
       if (recorder && typeof recorder.stop === 'function') {
         recorder.stop()
         videoStore.setRecordingStatus(false)
-        videoStore.isRecorder = false
       } else {
         console.error('Invalid MediaRecorder instance.')
       }
