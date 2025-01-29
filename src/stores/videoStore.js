@@ -18,4 +18,6 @@ export const useVideoStore = defineStore('video', {
       this.videoUrl = URL.createObjectURL(this.videoBlob)
     },
   },
+
+  persist: true,
 })
