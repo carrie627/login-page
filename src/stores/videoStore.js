@@ -19,5 +19,7 @@ export const useVideoStore = defineStore('video', {
     },
   },
 
-  persist: true,
+  persist: {
+    storage: sessionStorage,
+  },
 })
