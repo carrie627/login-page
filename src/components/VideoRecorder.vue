@@ -117,7 +117,7 @@ export default {
 
         // Update the faceDetected flag.
         videoStore.faceDetected = detections.length > 0
-      }, 1000)
+      }, 500)
     }
 
     const startRecording = () => {
