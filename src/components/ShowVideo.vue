@@ -86,5 +86,11 @@ video {
   height: auto;
   border: 2px solid #ccc;
   border-radius: 8px;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+video::-webkit-media-controls-enclosure {
+  transform: scaleX(-1);
 }
 </style>

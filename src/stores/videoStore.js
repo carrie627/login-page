@@ -6,6 +6,10 @@ export const useVideoStore = defineStore('video', {
     videoBlob: null,
     videoUrl: null,
     MediaRecorder: null,
+    faceDetected: false,
+    faceDetectionInterval: null,
+    timer: 0,
+    timerInterval: null,
   }),
 
   actions: {
