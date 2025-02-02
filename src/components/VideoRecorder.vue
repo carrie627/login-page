@@ -112,12 +112,12 @@ export default {
 
         const detections = await faceapi.detectAllFaces(
           videoEl.value,
-          new faceapi.TinyFaceDetectorOptions(),
+          new faceapi.TinyFaceDetectorOptions({ inputSize: 128, scoreThreshold: 0.5 }),
         )
 
         // Update the faceDetected flag.
         videoStore.faceDetected = detections.length > 0
-      }, 500)
+      }, 1000)
     }
 
     const startRecording = () => {
